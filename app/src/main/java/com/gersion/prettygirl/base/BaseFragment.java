@@ -19,6 +19,10 @@ public abstract class BaseFragment extends Fragment {
     protected View view;
     private Toast mToast;
 
+    public BaseFragment(){
+
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

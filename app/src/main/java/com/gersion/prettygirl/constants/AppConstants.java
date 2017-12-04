@@ -5,5 +5,6 @@ package com.gersion.prettygirl.constants;
  */
 
 public interface AppConstants {
-    String BASE_URL = "http://sindar.huainanhai.com/knack/list_today?phone_sn=";
+    String BASE_URL = "http://120.79.49.134:8080/";
+    String BASE_IMAGE_URL = "http://120.79.49.134/image/";
 }
