@@ -16,6 +16,7 @@ import com.gersion.prettygirl.utils.ImageUtil;
 import com.gersion.smartrecycleviewlibrary.ptr2.IRVAdapter;
 
 import java.util.List;
+import java.util.ListIterator;
 
 public class CommonListAdapter extends MultiTypeAdapter implements IRVAdapter<GirlImage> {
     @Override
@@ -36,7 +37,7 @@ public class CommonListAdapter extends MultiTypeAdapter implements IRVAdapter<Gi
 //                .centerCrop()
 //                .placeholder(R.mipmap.ic_launcher)
 //                .into(ivIcon);
-        ImageUtil.loadImage(activity,bean.getIcon(),ivIcon);
+        ImageUtil.loadCropImage(activity,bean.getIcon(),ivIcon);
         llContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,8 +63,9 @@ public class CommonListAdapter extends MultiTypeAdapter implements IRVAdapter<Gi
 
     @Override
     public void addData(List<GirlImage> list) {
+        int start = items.size();
         items.addAll(list);
-        notifyDataSetChanged();
+        this.notifyItemRangeChanged(start, items.size());
     }
 
     @Override
@@ -73,9 +75,16 @@ public class CommonListAdapter extends MultiTypeAdapter implements IRVAdapter<Gi
     }
 
     @Override
-    public void remove(GirlImage GirlImage) {
-        items.remove(GirlImage);
-        notifyDataSetChanged();
+    public void remove(GirlImage girlImage) {
+        int position = 0;
+        for(ListIterator iterator = this.items.listIterator(); iterator.hasNext(); ++position) {
+            GirlImage next = (GirlImage) iterator.next();
+            if(next == girlImage) {
+                iterator.remove();
+                this.notifyItemRemoved(position);
+                break;
+            }
+        }
     }
 
     @Override
@@ -83,40 +92,4 @@ public class CommonListAdapter extends MultiTypeAdapter implements IRVAdapter<Gi
         return items;
     }
 
-//    @Override
-//    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        View view = inflater.inflate(R.layout.item_common_list, parent, false);
-//        return new ViewHolder(view);
-//    }
-//
-//    @Override
-//    public void onBindViewHolder(ViewHolder holder, int position) {
-//        GirlImage apkModel = mDatas.get(position);
-//        holder.bind(apkModel);
-//    }
-//
-//    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-//
-//        private GirlImage mBean;
-//        private final TextView mTvTitle;
-//        private final ImageView mIvIcon;
-//
-//        public ViewHolder(View itemView) {
-//            super(itemView);
-//            mTvTitle = itemView.findViewById(R.id.tv_title);
-//            mIvIcon = itemView.findViewById(R.id.iv_icon);
-//        }
-//
-//        public void bind(GirlImage bean) {
-//            mBean = bean;
-//            itemView.setOnClickListener(this);
-//            mTvTitle.setText(bean.getTitle());
-//            Glide.with(mContext).load(bean.getImageUrl()).into(mIvIcon);
-//        }
-//
-//        @Override
-//        public void onClick(View v) {
-//
-//        }
-//    }
 }

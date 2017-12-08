@@ -9,8 +9,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnticipateInterpolator;
-import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,21 +16,17 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.gersion.library.dialog.LoadingDialog;
+import com.gersion.library.http.HttpHandler;
 import com.gersion.prettygirl.R;
 import com.gersion.prettygirl.base.BaseActivity;
 import com.gersion.prettygirl.bean.GirlImage;
 import com.gersion.prettygirl.bean.GirlImageResutBean;
 import com.gersion.prettygirl.constants.AppConstants;
-import com.gersion.prettygirl.utils.GsonQuick;
-import com.gersion.prettygirl.utils.LoggerUtils;
-import com.gersion.prettygirl.view.LoadingDialog;
 import com.gersion.prettygirl.view.TitleView;
 import com.gersion.smartrecycleviewlibrary.SmartRecycleView;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.github.ybq.android.spinkit.SpinKitView;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.AbsCallback;
-import com.lzy.okgo.model.Response;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +35,7 @@ import java.util.List;
  * Created by aa326 on 2017/11/27.
  */
 
-public class DetailActivity extends BaseActivity {
+public class DetailActivity extends BaseActivity implements HttpHandler.ResultCallBack<GirlImageResutBean> {
     private PhotoPagerAdapter mAdapter;
     private String mUrl;
     private TitleView mTitleView;
@@ -59,6 +53,7 @@ public class DetailActivity extends BaseActivity {
     private View mRlContainer;
     private int mRlContainerHeight;
     private int mTitleViewHeight;
+    private HttpHandler mHttpHandler;
 
     @Override
     protected int setLayoutId() {
@@ -89,6 +84,11 @@ public class DetailActivity extends BaseActivity {
         int categoryId = intent.getIntExtra("categoryId", -1);
         mTitleView.setTitleText(title);
         mUrl = AppConstants.BASE_URL + "image/getImageListByCategoryId?categoryId=" + categoryId;
+
+        mHttpHandler = new HttpHandler.Builder(this,this,GirlImageResutBean.class)
+                .setUrl(mUrl)
+                .setResultCallBack(this)
+                .build();
         getData();
 
     }
@@ -119,34 +119,19 @@ public class DetailActivity extends BaseActivity {
         });
     }
 
-    private void getData() {
-        OkGo.<GirlImageResutBean>get(mUrl)
-                .tag(this)
-                .execute(new AbsCallback<GirlImageResutBean>() {
-                    @Override
-                    public void onSuccess(Response<GirlImageResutBean> response) {
-//                        Bean.DataBean data = response.body();
-//                        List<Bean.DataBean.ListBean> list = data.getList();
-//                        mAdapter.getItems().addAll(list);
-//                        page++;
-//                        if (page>10){
-//                            mAdapter.notifyDataSetChanged();
-//                            return;
-//                        }
-//                        getData();
-                        GirlImageResutBean data = response.body();
-                        List<GirlImage> list = data.getData();
-//                        mSmartRecycleView.handleData(list);
-                        setData(list);
-                    }
+    @Override
+    public void handleSucess(GirlImageResutBean bean) {
+        List<GirlImage> list = bean.getData();
+        setData(list);
+    }
 
-                    @Override
-                    public GirlImageResutBean convertResponse(okhttp3.Response response) throws Throwable {
-                        String result = response.body().string();
-                        LoggerUtils.d(result);
-                        return GsonQuick.fromJsontoBean(result, GirlImageResutBean.class);
-                    }
-                });
+    @Override
+    public void handleError(Throwable throwable) {
+
+    }
+
+    private void getData() {
+        mHttpHandler.getBeanData();
     }
 
 
@@ -208,16 +193,14 @@ public class DetailActivity extends BaseActivity {
 
     private void viewUp(View view, float y) {
         ObjectAnimator animator = ObjectAnimator.ofFloat(view, "translationY", y, 0);
-        animator.setDuration(500);
-        animator.setInterpolator(new OvershootInterpolator());
+        animator.setDuration(300);
         animator.start();
         mIsOpen = true;
     }
 
     private void viewDown(View view, float y) {
         ObjectAnimator animator = ObjectAnimator.ofFloat(view, "translationY", 0, y);
-        animator.setDuration(500);
-        animator.setInterpolator(new AnticipateInterpolator());
+        animator.setDuration(300);
         animator.start();
         mIsOpen = false;
     }

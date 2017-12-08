@@ -2,36 +2,32 @@ package com.gersion.prettygirl.fragment;
 
 import android.os.Bundle;
 
+import com.gersion.library.http.HttpHandler;
+import com.gersion.library.utils.LogUtils;
 import com.gersion.prettygirl.R;
 import com.gersion.prettygirl.adapter.CommonListAdapter;
 import com.gersion.prettygirl.base.BaseFragment;
 import com.gersion.prettygirl.bean.CategoryResultBean;
 import com.gersion.prettygirl.bean.GirlCategory;
-import com.gersion.prettygirl.bean.HomeListBean;
 import com.gersion.prettygirl.constants.AppConstants;
-import com.gersion.prettygirl.utils.CallBack;
-import com.gersion.prettygirl.utils.GsonQuick;
-import com.gersion.prettygirl.utils.LoggerUtils;
 import com.gersion.smartrecycleviewlibrary.SmartRecycleView;
 import com.gersion.smartrecycleviewlibrary.ptr2.PullToRefreshLayout;
-import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import okhttp3.Call;
-
 /**
  * Created by aa326 on 2017/11/27.
  */
 
-public class CommonFragment extends BaseFragment {
+public class CommonFragment extends BaseFragment implements HttpHandler.ResultCallBack<CategoryResultBean> {
 
     private int mGirlType;
     private CommonListAdapter mAdapter;
     String url = AppConstants.BASE_URL + "image/getCategoryListByGirlType";
     private SmartRecycleView mSmartRecycleView;
+    private HttpHandler mHttpHandler;
 
     @Override
     protected int setLayoutId() {
@@ -60,66 +56,29 @@ public class CommonFragment extends BaseFragment {
                         getData(i);
                     }
                 });
+
     }
 
     @Override
     protected void initData(Bundle bundle) {
+        int girlType = getArguments().getInt("girlType");
+        LogUtils.e(girlType);
+        Map<String,Object> params = new HashMap<>();
+        params.put("girlType", girlType);
+        params.put("currentPage", 1);
+        params.put("pageSize", 10);
+        mHttpHandler = new HttpHandler.Builder(getActivity(),this,CategoryResultBean.class)
+                .setUrl(url)
+                .setResultCallBack(this)
+                .setParamMap(params)
+                .setHttpMethod(HttpHandler.POST)
+                .build();
         getData(1);
     }
 
     private void getData(int page) {
-        Map<String,String> params = new HashMap<>();
-        params.put("pictureType", "1");
-        params.put("currentPage", page+"");
-        params.put("pageSize", "10");
-        OkHttpUtils.get()
-                .url(url)
-//                .tag(this).params(params)
-                .build()
-                .execute(new CallBack() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        LoggerUtils.e(e.getMessage());
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        LoggerUtils.d(response);
-                        CategoryResultBean data = GsonQuick.fromJsontoBean(response, HomeListBean.class);
-                        final List<GirlCategory> list = data.getData().getList();
-                        mSmartRecycleView.handleData(list);
-//                        mAdapter.getData().addAll(list);
-//                        mAdapter.notifyDataSetChanged();
-                    }
-                });
-//        OkGo.<HomeListBean>post(url)
-//                .tag(this)
-//                .params(params)
-////                .params("pictureType", mGirlType)
-////                .params("currentPage", page)
-////                .params("pageSize", 10)
-//                .execute(new AbsCallback<HomeListBean>() {
-//                    @Override
-//                    public void onSuccess(Response<HomeListBean> response) {
-//                        GirlImageResutBean data = response.body();
-//                        List<GirlImage> list = data.getData().getList();
-////                        mAdapter.getItems().addAll(list);
-//                        mSmartRecycleView.handleData(list);
-////                        page++;
-////                        if (page>10){
-////                            mAdapter.notifyDataSetChanged();
-////                            return;
-////                        }
-////                        getData();
-//                    }
-//
-//                    @Override
-//                    public HomeListBean convertResponse(okhttp3.Response response) throws Throwable {
-//                        String result = response.body().string();
-//                        LoggerUtils.d(result);
-//                        return GsonQuick.fromJsontoBean(result, HomeListBean.class);
-//                    }
-//                });
+        mHttpHandler.setParamMap("currentPage",page);
+        mHttpHandler.getBeanData();
     }
 
     @Override
@@ -131,4 +90,14 @@ public class CommonFragment extends BaseFragment {
         mGirlType = girlType;
     }
 
+    @Override
+    public void handleSucess(CategoryResultBean categoryResultBean) {
+        final List<GirlCategory> list = categoryResultBean.getData().getList();
+        mSmartRecycleView.handleData(list);
+    }
+
+    @Override
+    public void handleError(Throwable throwable) {
+
+    }
 }

@@ -4,8 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.orhanobut.logger.Logger;
-
 import java.util.List;
 
 /**
@@ -36,7 +34,6 @@ public class HomePagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         String titile = mTitles.get(position);
-        Logger.d(titile);
         return titile;
     }
 

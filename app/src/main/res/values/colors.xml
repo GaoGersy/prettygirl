@@ -31,5 +31,6 @@
     <color name="password_boarder">#f0f2f1</color>
     <color name="confirm">#f75190</color>
     <color name="item_divider">#a75190</color>
+    <color name="PrimaryLight">#f64ac8</color>
     <color name="item_bg">#11ffffff</color>
 </resources>

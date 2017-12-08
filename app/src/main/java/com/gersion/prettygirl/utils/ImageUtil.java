@@ -98,6 +98,21 @@ public class ImageUtil {
     }
 
     //解决第一次只加载默认图片
+    public static void loadCropImage(Context context, String url, final ImageView imag, int imgId) {
+        Glide
+                .with(context)
+                .load(AppConstants.BASE_IMAGE_URL + url)
+                .placeholder(imgId) //设置占位图
+                .error(imgId) //设置错误图片
+                .crossFade() //设置淡入淡出效果，默认300ms，可以传参
+                .centerCrop()
+                .into(imag);
+    }
+
+    public static void loadCropImage(Context context, String url, final ImageView imag) {
+        loadCropImage(context,url,imag,R.mipmap.photo_default);
+    }
+
     public static void loadImage(Context context, String url, final ImageView imag) {
         loadCircleNoLoad(context,url,imag,R.mipmap.photo_default);
     }
