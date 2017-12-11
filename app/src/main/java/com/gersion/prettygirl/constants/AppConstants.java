@@ -7,4 +7,5 @@ package com.gersion.prettygirl.constants;
 public interface AppConstants {
     String BASE_URL = "http://120.79.49.134:8080/";
     String BASE_IMAGE_URL = "http://120.79.49.134/image/";
+    String SP_FILE = "config";
 }

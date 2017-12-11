@@ -42,4 +42,6 @@ dependencies {
     compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
 
     compile 'com.github.chrisbanes:PhotoView:2.0.0'
+
+    compile 'com.ashokvarma.android:bottom-navigation-bar:2.0.3'
 }

@@ -10,13 +10,15 @@ import java.util.List;
  * Created by aa326 on 2017/11/27.
  */
 
-public class HomePagerAdapter extends FragmentStatePagerAdapter {
+public class PicturePagerAdapter extends FragmentStatePagerAdapter {
 
     private List<Fragment> mFragments;
+    private List<String> mTitles;
 
-    public HomePagerAdapter(FragmentManager fm, List<Fragment> fragments) {
+    public PicturePagerAdapter(FragmentManager fm, List<Fragment> fragments, List<String> titles) {
         super(fm);
         mFragments = fragments;
+        mTitles = titles;
     }
 
     @Override
@@ -27,6 +29,12 @@ public class HomePagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return mFragments.size();
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        String titile = mTitles.get(position);
+        return titile;
     }
 
 }

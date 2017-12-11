@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.gersion.library.dialog.LoadingDialog;
@@ -234,26 +235,11 @@ public class DetailActivity extends BaseActivity implements HttpHandler.ResultCa
             final PhotoView photoView = (PhotoView) flContainer.findViewById(R.id.photoView);
             final SpinKitView spinKitView = (SpinKitView) flContainer.findViewById(R.id.spin_kit);
             final TextView tv_notice = (TextView) flContainer.findViewById(R.id.tv_notice);
-            Glide.with(DetailActivity.this).load(imgUrl).asBitmap().into(new SimpleTarget<Bitmap>() {
-                @Override
-                public void onLoadStarted(Drawable placeholder) {
-                    spinKitView.setVisibility(View.VISIBLE);
-                    tv_notice.setVisibility(View.GONE);
-                }
-
-                @Override
-                public void onLoadFailed(Exception e, Drawable errorDrawable) {
-                    spinKitView.setVisibility(View.GONE);
-                    tv_notice.setVisibility(View.VISIBLE);
-                }
-
-                @Override
-                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                    spinKitView.setVisibility(View.GONE);
-                    tv_notice.setVisibility(View.GONE);
-                    photoView.setImageBitmap(resource);
-                }
-            });
+            if (imgUrl.endsWith("gif")){
+                loadGIF(imgUrl, photoView, spinKitView, tv_notice);
+            }else {
+                loadImage(imgUrl, photoView, spinKitView, tv_notice);
+            }
 
             photoView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -272,5 +258,51 @@ public class DetailActivity extends BaseActivity implements HttpHandler.ResultCa
             return flContainer;
         }
 
+    }
+
+    private void loadImage(String imgUrl, final PhotoView photoView, final SpinKitView spinKitView, final TextView tv_notice) {
+        Glide.with(DetailActivity.this).load(imgUrl).asBitmap().into(new SimpleTarget<Bitmap>() {
+            @Override
+            public void onLoadStarted(Drawable placeholder) {
+                spinKitView.setVisibility(View.VISIBLE);
+                tv_notice.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                spinKitView.setVisibility(View.GONE);
+                tv_notice.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                spinKitView.setVisibility(View.GONE);
+                tv_notice.setVisibility(View.GONE);
+                photoView.setImageBitmap(resource);
+            }
+        });
+    }
+
+    private void loadGIF(String imgUrl, final PhotoView photoView, final SpinKitView spinKitView, final TextView tv_notice) {
+        Glide.with(DetailActivity.this).load(imgUrl).asGif().into(new SimpleTarget<GifDrawable>() {
+            @Override
+            public void onLoadStarted(Drawable placeholder) {
+                spinKitView.setVisibility(View.VISIBLE);
+                tv_notice.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                spinKitView.setVisibility(View.GONE);
+                tv_notice.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onResourceReady(GifDrawable resource, GlideAnimation<? super GifDrawable> glideAnimation) {
+                spinKitView.setVisibility(View.GONE);
+                tv_notice.setVisibility(View.GONE);
+                photoView.setImageDrawable(resource);
+            }
+        });
     }
 }

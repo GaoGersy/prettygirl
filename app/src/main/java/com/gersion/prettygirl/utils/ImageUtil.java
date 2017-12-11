@@ -117,6 +117,10 @@ public class ImageUtil {
         loadCircleNoLoad(context,url,imag,R.mipmap.photo_default);
     }
 
+    public static void loadGIF(Context context, String url, final ImageView imag) {
+
+    }
+
 //    public static DrawableRequestBuilder<String> getInstance(Context context, String url) {
 //        DrawableRequestBuilder<String> builder = Glide
 //                .with(context)

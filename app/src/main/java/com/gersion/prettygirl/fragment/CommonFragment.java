@@ -3,10 +3,9 @@ package com.gersion.prettygirl.fragment;
 import android.os.Bundle;
 
 import com.gersion.library.http.HttpHandler;
-import com.gersion.library.utils.LogUtils;
 import com.gersion.prettygirl.R;
 import com.gersion.prettygirl.adapter.CommonListAdapter;
-import com.gersion.prettygirl.base.BaseFragment;
+import com.gersion.prettygirl.base.LazyLoadFragment;
 import com.gersion.prettygirl.bean.CategoryResultBean;
 import com.gersion.prettygirl.bean.GirlCategory;
 import com.gersion.prettygirl.constants.AppConstants;
@@ -21,7 +20,7 @@ import java.util.Map;
  * Created by aa326 on 2017/11/27.
  */
 
-public class CommonFragment extends BaseFragment implements HttpHandler.ResultCallBack<CategoryResultBean> {
+public class CommonFragment extends LazyLoadFragment implements HttpHandler.ResultCallBack<CategoryResultBean> {
 
     private int mGirlType;
     private CommonListAdapter mAdapter;
@@ -61,19 +60,8 @@ public class CommonFragment extends BaseFragment implements HttpHandler.ResultCa
 
     @Override
     protected void initData(Bundle bundle) {
-        int girlType = getArguments().getInt("girlType");
-        LogUtils.e(girlType);
-        Map<String,Object> params = new HashMap<>();
-        params.put("girlType", girlType);
-        params.put("currentPage", 1);
-        params.put("pageSize", 10);
-        mHttpHandler = new HttpHandler.Builder(getActivity(),this,CategoryResultBean.class)
-                .setUrl(url)
-                .setResultCallBack(this)
-                .setParamMap(params)
-                .setHttpMethod(HttpHandler.POST)
-                .build();
-        getData(1);
+        mGirlType = getArguments().getInt("girlType");
+
     }
 
     private void getData(int page) {
@@ -99,5 +87,20 @@ public class CommonFragment extends BaseFragment implements HttpHandler.ResultCa
     @Override
     public void handleError(Throwable throwable) {
 
+    }
+
+    @Override
+    protected void initData() {
+        Map<String,Object> params = new HashMap<>();
+        params.put("girlType", mGirlType);
+        params.put("currentPage", 1);
+        params.put("pageSize", 10);
+        mHttpHandler = new HttpHandler.Builder(getActivity(),this,CategoryResultBean.class)
+                .setUrl(url)
+                .setResultCallBack(this)
+                .setParamMap(params)
+                .setHttpMethod(HttpHandler.POST)
+                .build();
+        getData(1);
     }
 }

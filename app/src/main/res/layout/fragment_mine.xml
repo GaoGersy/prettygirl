@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20pt"
+                    android:background="#11ffffff">
+
+                <ImageView
+                        android:layout_centerVertical="true"
+                        android:id="@+id/icon"
+                        android:layout_width="100pt"
+                        android:layout_height="100pt"
+                        android:padding="1px"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/default_icon" />
+
+                <TextView
+                        android:layout_toRightOf="@id/icon"
+                        android:layout_centerVertical="true"
+                        android:id="@+id/name"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="路人甲"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                <ImageView
+                        android:id="@+id/code2d"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/code2d" />
+            </RelativeLayout>
+
+            <com.gersion.prettygirl.view.ItemView
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/collection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:item_title="收藏" />
+
+            <com.gersion.prettygirl.view.ItemView
+                    android:id="@+id/setting"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:item_show_divider="false"
+                    app:item_title="设置" />
+
+            <com.gersion.prettygirl.view.ItemView
+                    android:id="@+id/about"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:item_title="关于" />
+            <com.gersion.prettygirl.view.ItemView
+                    android:id="@+id/share"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    app:item_show_divider="false"
+                    app:item_title="分享" />
+
+            <com.gersion.prettygirl.view.ItemView
+                    android:id="@+id/exit"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:item_go_show="false"
+                    app:item_title="退出" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
