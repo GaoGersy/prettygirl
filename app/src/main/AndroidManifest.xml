@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        package="com.gersion.prettygirl">
+        package="com.gersion.prettygirl"
+        android:versionCode="2"
+        android:versionName="1.0.1">
+
+    <uses-sdk
+            android:minSdkVersion="9"
+            android:targetSdkVersion="22" />
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
@@ -31,8 +37,32 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.DetailActivity"/>
-        <activity android:name=".activity.ADActivity">
+        <activity android:name=".activity.IntegrationActivity">
         </activity>
+        <activity
+                android:name=".activity.SharePopActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AlertDialogBottom"/>
+        <activity
+                android:name=".wxapi.WXEntryActivity"
+                android:configChanges="keyboardHidden|orientation|screenSize"
+                android:exported="true"
+                android:screenOrientation="portrait"
+                android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+
+        <activity
+                android:name="com.tencent.bugly.beta.ui.BetaActivity"
+                android:theme="@android:style/Theme.Translucent" />
+
+        <provider
+                android:name="android.support.v4.content.FileProvider"
+                android:authorities="${applicationId}.fileProvider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+            <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/provider_paths"/>
+        </provider>
     </application>
 
 </manifest>

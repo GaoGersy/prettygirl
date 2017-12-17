@@ -1,6 +1,7 @@
 package com.gersion.prettygirl.fragment;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 
 import com.gersion.library.http.HttpHandler;
 import com.gersion.prettygirl.R;
@@ -24,7 +25,7 @@ public class CommonFragment extends LazyLoadFragment implements HttpHandler.Resu
 
     private int mGirlType;
     private CommonListAdapter mAdapter;
-    String url = AppConstants.BASE_URL + "image/getCategoryListByGirlType";
+    private String url = AppConstants.URLS.GET_CATEGORY_LIST;
     private SmartRecycleView mSmartRecycleView;
     private HttpHandler mHttpHandler;
 
@@ -39,7 +40,7 @@ public class CommonFragment extends LazyLoadFragment implements HttpHandler.Resu
         mAdapter = new CommonListAdapter();
         mAdapter.registerMultiBean(GirlCategory.class,R.layout.item_common_list);
         mSmartRecycleView.setAdapter(mAdapter);
-        mSmartRecycleView.setLayoutManger(SmartRecycleView.LayoutManagerType.LINEAR_LAYOUT);
+        mSmartRecycleView.setLayoutManger(SmartRecycleView.LayoutManagerType.GRID_LAYOUT,LinearLayoutManager.VERTICAL );
         mSmartRecycleView.refreshEnable(true)
                 .loadMoreEnable(true)
                 .setFirstPage(1)

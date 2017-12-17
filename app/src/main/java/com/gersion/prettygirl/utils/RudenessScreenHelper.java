@@ -14,9 +14,6 @@ import java.lang.reflect.Field;
 
 import static android.content.Context.WINDOW_SERVICE;
 
-/**
- * Created by Caodongyao on 2017/8/13.
- */
 
 public class RudenessScreenHelper {
 

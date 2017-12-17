@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".activity.IntegrationActivity"
+        >
+    <com.gersion.prettygirl.view.TitleView
+            android:id="@+id/titleView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    <TextView
+            android:text="积分是20"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            />
+    <TextView
+            android:text="获取积分"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+</LinearLayout>

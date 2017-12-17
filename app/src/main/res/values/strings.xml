@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">PrettyGirl</string>
-    <string name="picture">图片</string>
-    <string name="forum">论坛</string>
+    <string name="app_name">美女秀</string>
+    <string name="picture">美图</string>
+    <string name="forum">BIU一下</string>
     <string name="mine">我的</string>
 </resources>

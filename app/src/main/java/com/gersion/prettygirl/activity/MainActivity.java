@@ -9,11 +9,14 @@ import com.gersion.library.http.HttpHandler;
 import com.gersion.prettygirl.R;
 import com.gersion.prettygirl.adapter.HomePagerAdapter;
 import com.gersion.prettygirl.base.BaseActivity;
-import com.gersion.prettygirl.fragment.ForumFragment;
 import com.gersion.prettygirl.fragment.MineFragment;
 import com.gersion.prettygirl.fragment.PictureFragment;
+import com.gersion.prettygirl.fragment.RandomFragment;
+import com.gersion.prettygirl.utils.AppUtils;
 import com.gersion.prettygirl.view.NoTouchViewPager;
 import com.gersion.prettygirl.view.TitleView;
+import com.tencent.bugly.beta.Beta;
+import com.tencent.bugly.beta.UpgradeInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +24,6 @@ import java.util.List;
 public class MainActivity extends BaseActivity {
 
     private TitleView mTitleView;
-//    private TabLayout mTablayout;
     private HttpHandler mHttpHandler;
     private BottomNavigationView mBottomNavigationView;
     private List<Fragment> mFragments;
@@ -37,7 +39,6 @@ public class MainActivity extends BaseActivity {
     protected void initView() {
         mTitleView = findView(R.id.titleView);
 
-        mTitleView.setTitleText("美图show");
         mTitleView.setBackVisiable(false);
 
 //        BadgeItem badgeItem=new BadgeItem().setBorderWidth(1).setBackgroundColorResource(R.color.colorAccent).setText("2").setHideOnSelect(true);
@@ -65,18 +66,19 @@ public class MainActivity extends BaseActivity {
 
         PictureFragment pictureFragment = new PictureFragment();
         MineFragment mineFragment = new MineFragment();
-        ForumFragment forumFragment = new ForumFragment();
+        RandomFragment randomFragment = new RandomFragment();
         mFragments = new ArrayList<>();
         mFragments.add(pictureFragment);
-        mFragments.add(forumFragment);
+        mFragments.add(randomFragment);
         mFragments.add(mineFragment);
         mTitles = new ArrayList<>();
-        String picture = "美图show";
+        String picture = getResources().getString(R.string.app_name);
         String forum = getResources().getString(R.string.forum);
         String mine = getResources().getString(R.string.mine);
         mTitles.add(picture);
         mTitles.add(forum);
         mTitles.add(mine);
+        mTitleView.setTitleText(picture);
         mNoTouchViewPager = findView(R.id.noTouchViewPager);
         HomePagerAdapter adapter = new HomePagerAdapter(getSupportFragmentManager(), mFragments);
         mNoTouchViewPager.setAdapter(adapter);
@@ -85,7 +87,17 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        checkUpgrade();
+    }
 
+    private void checkUpgrade() {
+        UpgradeInfo upgradeInfo = Beta.getUpgradeInfo();
+        int currentCode = AppUtils.getAppVersionCode(MainActivity.this);
+        if (Beta.getUpgradeInfo() != null) {
+            if (upgradeInfo.versionCode > currentCode) {
+                Beta.checkUpgrade();
+            }
+        }
     }
 
     @Override

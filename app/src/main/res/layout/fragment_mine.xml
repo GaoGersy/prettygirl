@@ -53,7 +53,16 @@
             </RelativeLayout>
 
             <com.gersion.prettygirl.view.ItemView
+                    android:id="@+id/integration"
                     android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:item_go_show="false"
+                    app:item_show_divider="false"
+                    app:item_title="积分" />
+
+            <com.gersion.prettygirl.view.ItemView
+                    android:layout_marginTop="10dp"
                     android:id="@+id/collection"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -82,13 +91,7 @@
                     app:item_show_divider="false"
                     app:item_title="分享" />
 
-            <com.gersion.prettygirl.view.ItemView
-                    android:id="@+id/exit"
-                    android:layout_marginTop="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:item_go_show="false"
-                    app:item_title="退出" />
+
         </LinearLayout>
     </ScrollView>
 

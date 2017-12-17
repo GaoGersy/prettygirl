@@ -23,26 +23,14 @@ public class CommonListAdapter extends MultiTypeAdapter implements IRVAdapter<Gi
     protected void convert(final BaseViewHolder helper, Object item) {
        final GirlCategory bean = (GirlCategory) item;
         helper.setText(R.id.tv_title, bean.getTitle());
-//        helper.setText(R.id.tv_content, bean.getSummary());
         View llContainer = helper.getView(R.id.ll_container);
         ImageView ivIcon = (ImageView) helper.getView(R.id.iv_icon);
         final MainActivity activity = (MainActivity) helper.getConvertView().getContext();
-//        Glide.with(activity)
-//                .load(AppConstants.BASE_IMAGE_URL+bean.getImageUrl())
-//                .centerCrop()
-//                .placeholder(R.drawable.loading_spinner)
-//                .into(ivIcon);
-//        GlideApp.with(activity)
-//                .load(AppConstants.BASE_IMAGE_URL+bean.getIcon())
-//                .centerCrop()
-//                .placeholder(R.mipmap.ic_launcher)
-//                .into(ivIcon);
         ImageUtil.loadCropImage(activity,bean.getIcon(),ivIcon);
         llContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-//                bundle.putSerializable("data",bean);
                 bundle.putString("title",bean.getTitle());
                 bundle.putInt("categoryId",bean.getCategoryId());
                 activity.toActivity(DetailActivity.class,bundle);

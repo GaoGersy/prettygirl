@@ -84,7 +84,7 @@ public class DetailActivity extends BaseActivity implements HttpHandler.ResultCa
         String title = intent.getStringExtra("title");
         int categoryId = intent.getIntExtra("categoryId", -1);
         mTitleView.setTitleText(title);
-        mUrl = AppConstants.BASE_URL + "image/getImageListByCategoryId?categoryId=" + categoryId;
+        mUrl = AppConstants.URLS.GET_IMAGE_LIST+ categoryId;
 
         mHttpHandler = new HttpHandler.Builder(this,this,GirlImageResutBean.class)
                 .setUrl(mUrl)
@@ -116,6 +116,13 @@ public class DetailActivity extends BaseActivity implements HttpHandler.ResultCa
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 setPositionText(position + 1);
+            }
+        });
+
+        mTitleView.setOnBackListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }

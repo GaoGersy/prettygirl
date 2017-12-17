@@ -80,7 +80,7 @@ public class PictureFragment extends LazyLoadFragment implements HttpHandler.Res
 
     @Override
     protected void initData() {
-        String url = AppConstants.BASE_URL+"image/getAllImageCategory";
+        String url = AppConstants.URLS.GET_ALL_IMAGE_LIST;
         mHttpHandler = new HttpHandler.Builder(getActivity(),this,GirlTypeResultBean.class)
                 .setUrl(url)
                 .setResultCallBack(this)
